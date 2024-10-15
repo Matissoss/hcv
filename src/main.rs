@@ -6,14 +6,21 @@ fn main() {
     }
     else if input_hex[1] == "-h" || input_hex[1] == "--help"{
         println!("
-        hcv is a simple tool for converting hex numbers to numbers we normally use
+        hcv is a simple tool for converting hex numbers to numbers we normally use and reverse
         To use hcv, run the program and as args enter your hex numbers.
         Example:
-        ./exec-name ff - returns 255
+        ./exec-name -n ff - returns 255
+        ./exec-name -x 450 - returns 1C2
             ");
     }
-    else{
+    else if input_hex[1] == "-n"{
         start_processing(input_hex);
+    }
+    else if input_hex[1] == "-x"{
+        norm_to_hex(input_hex);
+    }
+    else{
+        println!("Wrong args");
     }
 }
 fn start_processing(nums: Vec<String>){
@@ -109,4 +116,62 @@ fn hex_chr_to_num(chr: char) -> u8{
         return 16;
     }
 
+}
+
+fn norm_to_hex(nums: Vec<String>){
+    for n in nums{
+        if !valid_hex_num(&n) {continue;}
+        let mut num : i128 = match n.trim().parse(){
+            Ok (v) => {v},
+            Err (_) => {0},
+        };
+        let mut res : String = String::from("");
+        while num != 0{
+            res += &norm_chr_to_hex(num % 16);
+            num /= 16;
+        }
+        print!("{} = ", n);
+        for c in res.chars().rev(){
+            print!("{}", c); 
+        }
+        println!("");
+    }
+}
+
+fn norm_chr_to_hex(norm: i128) -> String{
+    if norm == 0{
+        return "0".to_string();
+    }
+    else if norm == 1{
+        return "1".to_string();
+    }
+    else if norm == 2{"2".to_string()}
+    else if norm == 3{"3".to_string()}
+    else if norm == 4{"4".to_string()}
+    else if norm == 5{"5".to_string()}
+    else if norm == 6{"6".to_string()}
+    else if norm == 7{"7".to_string()}
+    else if norm == 8{"8".to_string()}
+    else if norm == 9{"9".to_string()}
+    else if norm == 10{
+        return "A".to_string();
+    }
+    else if norm == 11{
+        return "B".to_string();
+    }
+    else if norm == 12{
+        return "C".to_string();
+    }
+    else if norm == 13{
+        return "D".to_string();
+    }
+    else if norm == 14{
+        return "E".to_string();
+    }
+    else if norm == 15{
+        return "F".to_string();
+    }
+    else{
+        return "0".to_string();
+    }
 }
